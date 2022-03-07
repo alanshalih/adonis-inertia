@@ -20,10 +20,18 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+ 
+Route.get('/register', async ({ inertia }) => {
+  return inertia.render('Register')
+})
+
+Route.get('/login', async ({ inertia }) => {
+  return inertia.render('Login')
+})
+
 Route.get('/', async ({ inertia }) => {
   return inertia.render('Test')
 })
+ 
 
-Route.get('/test', async ({ inertia }) => {
-  return inertia.render('Test', { nama: 'Danang Ponorogo' })
-})
+Route.post('register','AuthController.register');

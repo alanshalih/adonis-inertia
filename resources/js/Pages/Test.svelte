@@ -1,6 +1,6 @@
 <script>
-  export let nama = "Danang";
-  import {   Link } from '@inertiajs/inertia-svelte'
+	export let nama = "Danang";
+  import {  inertia, Link } from '@inertiajs/inertia-svelte'
 </script>
 
 <h1>Halo {nama}</h1>

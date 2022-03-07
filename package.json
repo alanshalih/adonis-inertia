@@ -20,7 +20,10 @@
     "youch-terminal": "^2.1.3"
   },
   "dependencies": {
+    "@adonisjs/auth": "^8.0.12",
     "@adonisjs/core": "^5.5.3",
+    "@adonisjs/lucid": "^17.1.0",
+    "@adonisjs/redis": "^7.1.1",
     "@adonisjs/repl": "^3.1.9",
     "@adonisjs/session": "^6.1.4",
     "@adonisjs/shield": "^7.0.8",
@@ -28,11 +31,17 @@
     "@eidellev/inertia-adonisjs": "^6.0.1",
     "@inertiajs/inertia": "^0.11.0",
     "@inertiajs/inertia-svelte": "^0.8.0",
+    "google-auth-library": "^7.14.0",
+    "luxon": "^2.3.1",
+    "node-mailjet": "^3.3.7",
+    "pg": "^8.7.3",
+    "phc-argon2": "^1.1.3",
     "postcss-loader": "^6.2.1",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
     "svelte-loader": "^3.1.2",
-    "svelte-preprocess": "^4.10.4"
+    "svelte-preprocess": "^4.10.4",
+    "uuid": "^8.3.2"
   }
 }
