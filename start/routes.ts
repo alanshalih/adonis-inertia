@@ -25,8 +25,18 @@ Route.get('/register', async ({ inertia }) => {
   return inertia.render('Register')
 })
 
-Route.get('/login', async ({ inertia }) => {
-  return inertia.render('Login')
+Route.get('/login', async ({ inertia,auth,response }) => {
+   
+  await auth.use('web').authenticate()
+   
+  // check login
+  if(auth.use('web').isLoggedIn)
+  {
+    return response.redirect("/")
+  }else{
+    return inertia.render('Login')
+  }
+
 })
 
 Route.get('/', async ({ inertia }) => {
@@ -35,3 +45,4 @@ Route.get('/', async ({ inertia }) => {
  
 
 Route.post('register','AuthController.register');
+Route.post('login','AuthController.login');
