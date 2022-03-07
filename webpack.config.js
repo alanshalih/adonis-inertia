@@ -181,7 +181,13 @@ Encore.configureDevServerOptions((options) => {
 */
 // Encore.enablePostCssLoader()
 // Encore.configureCssLoader(() => {})
-
+Encore
+.enablePostCssLoader((options) => {
+  // new option outlined here https://webpack.js.org/loaders/postcss-loader/
+  options.postcssOptions = {
+    config: './postcss.config.js',
+  }
+})
 /*
 |--------------------------------------------------------------------------
 | Enable Vue loader
