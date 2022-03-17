@@ -7,15 +7,19 @@ import User from 'App/Models/User';
 import SendEmail from "../../Service/Email"
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+const crypto = require('crypto')
 
 const {OAuth2Client} = require('google-auth-library');
 export default class AuthController {
 
     public async register ({request,auth,response,session}: HttpContextContract) {
 
-        const user = request.only(["email","password","name","id"]);
+        const user = request.only(["email","password","name","id","gravatar"]);
 
         user.email = user.email.toLowerCase()
+
+        user.gravatar = "https://www.gravatar.com/avatar/"+crypto.createHash('md5').update(user.email).digest('hex');
+
 
 
         var data =  await User.query().where("email",user.email).first()

@@ -21,14 +21,27 @@
 import Route from '@ioc:Adonis/Core/Route'
 
  
-Route.get('/register', async ({ inertia }) => {
-  return inertia.render('Register')
+Route.get('/register', async ({ inertia,auth,response }) => {
+
+
+  await auth.use('web').check()
+   
+  // check login
+  if(auth.use('web').isLoggedIn)
+  {
+    return response.redirect("/")
+  }else{
+    return inertia.render('Register')
+  }
+
+ 
 })
 
 Route.get('/login', async ({ inertia,auth,response }) => {
    
-  await auth.use('web').authenticate()
-   
+  // await auth.use('web').authenticate() 
+
+  await auth.use('web').check()
   // check login
   if(auth.use('web').isLoggedIn)
   {
@@ -39,10 +52,11 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
 })
 
-Route.get('/', async ({ inertia }) => {
-  return inertia.render('Test')
-})
- 
+Route.group(()=>{
+  Route.get('/', async ({ inertia }) => {
+    return inertia.render('Test')
+  }) 
+}).middleware('auth')
 
 Route.post('register','AuthController.register');
 Route.post('login','AuthController.login');

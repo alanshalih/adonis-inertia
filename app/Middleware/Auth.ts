@@ -1,6 +1,7 @@
 import { GuardsList } from '@ioc:Adonis/Addons/Auth'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { AuthenticationException } from '@adonisjs/auth/build/standalone'
+import Inertia from '@ioc:EidelLev/Inertia';
 
 /**
  * Auth middleware is meant to restrict un-authenticated access to a given route
@@ -71,6 +72,11 @@ export default class AuthMiddleware {
      */
     const guards = customGuards.length ? customGuards : [auth.name]
     await this.authenticate(auth, guards)
+    Inertia.share({
+      user: () => {
+        return auth.user
+      },
+    }).version(() => Inertia.manifestFile('public/assets/manifest.json'));
     await next()
   }
 }

@@ -1,21 +1,33 @@
 <script>
-    import {  inertia, Link } from '@inertiajs/inertia-svelte' 
-    import { Inertia } from '@inertiajs/inertia'
+    import {  inertia, Link, useForm } from '@inertiajs/inertia-svelte' 
+     
     import {generatePassword} from "../Components/helper"
   
-    let values = {
+    let form = useForm({
       name: '', 
       email: '',
       password : ''
-    }
+    })
     let showPass = false
 
     let confirmPass = ""
   
-    function handleSubmit() {
-        if(values.password == confirmPass)
+    async function handleSubmit() {
+        if($form.password == confirmPass)
         {
-            Inertia.post('/register', values)
+            //    Inertia.post('/register', form).then(res=>{
+            //        console.log(res)
+            //    })
+            $form.post('/register', {
+  preserveScroll: true, 
+  onSuccess: (res) => {
+      console.log(res)
+  },
+  onError:(res)=>{
+      console.log(res)
+  }
+})
+           
         }else{
             alert("password tidak cocok")
         }
@@ -30,28 +42,28 @@
             <h1 class="mb-8 text-3xl text-center">Sign up</h1>
             <input 
                 type="text"
-                bind:value="{values.name}"
+                bind:value="{$form.name}"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="name"
                 placeholder="Full Name" />
 
             <input 
                 type="text"
-                bind:value="{values.email}"
+                bind:value="{$form.email}"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="email"
                 placeholder="Email" />
 
             {#if showPass}
             <input 
-            bind:value="{values.password}"
+            bind:value="{$form.password}"
                 type="text"
                 class="block border border-grey-light w-full p-3 rounded  "
                 name="password"
                 placeholder="Password" />
             {:else} 
             <input 
-            bind:value="{values.password}"
+            bind:value="{$form.password}"
                 type="password"
                 class="block border border-grey-light w-full p-3 rounded  "
                 name="password"
@@ -59,7 +71,7 @@
             {/if}
             <div class="mb-4 flex justify-between">
                 <button class="text-sm text-gray-500" type="button" on:click="{()=>{showPass = !showPass}}">{showPass ? 'Sembunyikan' : "tampilkan"} </button>
-                <button class="text-sm text-gray-500"  type="button" on:click="{()=>{values.password = generatePassword();confirmPass = values.password}}">Generate  </button>
+                <button class="text-sm text-gray-500"  type="button" on:click="{()=>{$form.password = generatePassword();confirmPass = $form.password}}">Generate  </button>
             </div> 
             <input 
             bind:value="{confirmPass}"
