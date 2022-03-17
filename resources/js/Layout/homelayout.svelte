@@ -224,7 +224,7 @@ import { page } from '@inertiajs/inertia-svelte'
                           <div class="h-full flex items-center">
                               <div aria-label="Home"  class="mr-10 flex items-center">
                                   <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_Grey_background-svg1.svg" alt="logo">
-                                  <h3 class="text-base text-gray-800 font-bold tracking-normal leading-tight ml-3 hidden lg:block">The North</h3>
+                                  <h3 class="text-base text-gray-800 font-bold tracking-normal leading-tight ml-3 hidden lg:block">DripJam</h3>
                               </div>
                               <ul class="pr-12 xl:flex items-center h-full hidden">
                                   <li class="hover:text-indigo-700 cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700"><a href="/"> Dashboard</a></li>
