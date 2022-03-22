@@ -4,8 +4,9 @@ import VideoPlayer from "../Components/VideoPlayer.svelte";
 export let event;
 export let videos;
 export let viewer;
-  function SelectVideo(){
-
+let video_id;
+  function SelectVideo(id){
+    video_id = id;
   }
     
 </script>
@@ -14,7 +15,7 @@ export let viewer;
         <div class="bg-black w-full z-10 flex justify-center"><img class="h-12 py-2 lg:h-20 " src="{event.logo}" alt=""></div>
     </div>
     <div class="bg-black">
-        <VideoPlayer {event}></VideoPlayer>
+        <VideoPlayer {event} {video_id}></VideoPlayer>
     </div>
     <div class="container mx-auto py-5">
        <section id="other-video" >

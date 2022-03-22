@@ -1,7 +1,9 @@
 
       <script>
 
-import { page } from '@inertiajs/inertia-svelte'
+import { page,inertia } from '@inertiajs/inertia-svelte'
+
+import { Inertia } from '@inertiajs/inertia'
         import {onMount} from "svelte"
         
         onMount(()=>{
@@ -79,6 +81,10 @@ import { page } from '@inertiajs/inertia-svelte'
                 chevronup2.classList.remove("hidden");
             }
         };
+
+            function Logout(){
+                Inertia.post("/logout")
+            }
               </script>
               <div class="h-full w-full absolute">
                   <!-- Navigation starts -->
@@ -108,9 +114,20 @@ import { page } from '@inertiajs/inertia-svelte'
                                                       <path d="M16.1667 3H12.8333C12.3731 3 12 3.3731 12 3.83333V7.16667C12 7.6269 12.3731 8 12.8333 8H16.1667C16.6269 8 17 7.6269 17 7.16667V3.83333C17 3.3731 16.6269 3 16.1667 3Z" stroke="#667EEA" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
                                                   </svg>
                                               </div>
-                                              <a href="/" class="text-indigo-500 ml-3 text-lg">Dashboard</a>
+                                              <a href="/" use:inertia class="text-indigo-500 ml-3 text-lg">Dashboard</a>
                                           </div>
                                       </li>
+                                      <li class="text-gray-800 pt-8">
+                                        <div class="flex items-center">
+                                            <div class="md:w-6 md:h-6 w-5 h-5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M6.66667 13.3333L8.33334 8.33334L13.3333 6.66667L11.6667 11.6667L6.66667 13.3333Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </div>
+                                            <a href="/register" use:inertia class="text-gray-800 ml-3 text-lg">Register</a>
+                                        </div>
+                                    </li>
                                        
                                   </ul>
                               </div>
@@ -156,7 +173,9 @@ import { page } from '@inertiajs/inertia-svelte'
                                   <h3 class="text-base text-gray-800 font-bold tracking-normal leading-tight ml-3 hidden lg:block">DripJam</h3>
                               </div>
                               <ul class="pr-12 xl:flex items-center h-full hidden">
-                                  <li class="hover:text-indigo-700 cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700"><a href="/"> Dashboard</a></li>
+                                  <li class="hover:text-indigo-700 cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700"><a href="/"   use:inertia> Dashboard</a></li>
+                                   
+                            <li class="hover:text-indigo-700 cursor-pointer h-full flex items-center text-sm text-gry-800 mx-10 tracking-normal" ><a href="/register" use:inertia>Register</a></li>
                                 
                               </ul>
                           </div>
@@ -178,7 +197,7 @@ import { page } from '@inertiajs/inertia-svelte'
                                                           <circle cx="12" cy="7" r="4" />
                                                           <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                                                       </svg>
-                                                      <a href="/" class="ml-2">My Profile</a>
+                                                      <a href="/register" use:inertia class="ml-2">Register</a>
                                                   </div>
                                               </li>
                                               <li class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
@@ -188,16 +207,8 @@ import { page } from '@inertiajs/inertia-svelte'
                                                       <line x1="12" y1="17" x2="12" y2="17.01" />
                                                       <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
                                                   </svg>
-                                                  <a href="/" class="ml-2">Help Center</a>
-                                              </li>
-                                              <li class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 flex items-center focus:text-indigo-700 focus:outline-none">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                      <path stroke="none" d="M0 0h24v24H0z" />
-                                                      <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                                      <circle cx="12" cy="12" r="3" />
-                                                  </svg>
-                                                  <a href="/" class="ml-2">Account Settings</a>
-                                              </li>
+                                                  <button on:click="{Logout}" class="ml-2">Logout</button>
+                                              </li> 
                                           </ul>
                                       </div>
                                   </div>

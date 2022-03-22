@@ -20,6 +20,7 @@
       }
     }
     export let event;
+    export let video_id;
     config.videoId = event.video_id;
     
       config.events =  { 
@@ -194,6 +195,11 @@
         }
         
       },100)
+
+      $ : if(video_id)
+      {
+        player.loadVideoById(video_id)
+      }
     
     </script>
     

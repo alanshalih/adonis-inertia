@@ -6,18 +6,35 @@ import Video from 'App/Models/Video';
 const crypto = require('crypto')
 
 export default class ViewersController {
-  public async optin({inertia,params}: HttpContextContract) {
+  public async optin({inertia,params,request,response}: HttpContextContract) {
+    
     
     const event = await Event.query().where("slug",params.id).first();
+   
 
     if(event)
-    return inertia.render("Optin",{event})
+    {
+      const viewer_id = request.cookie('viewer-'+event.id)
+
+      if(viewer_id)
+      {
+        return response.redirect("/view/"+viewer_id)
+      }else{
+        return inertia.render("Optin",{event})
+      }
+      
+    }
     else {
       return "Page Not Found";
     }
   } 
 
   public async validatePhone(phone) {
+
+    if(!phone)
+    {
+      return phone;
+    }
 
     let selected_dial_code = '+62';
 
@@ -96,7 +113,7 @@ export default class ViewersController {
     
     
 
-    return response.redirect("/view/"+id)
+    return response.cookie('viewer-'+params.event_id, id).redirect("/view/"+id)
 
     
   } 

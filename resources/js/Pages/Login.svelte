@@ -53,11 +53,11 @@
              
         </form>
 
-        <div class="text-grey-dark mt-6">
+        <!-- <div class="text-grey-dark mt-6">
             Belum punya Akun? 
             <a class="no-underline border-b border-blue text-blue" use:inertia href="/register">
                 Register
             </a>.
-        </div>
+        </div> -->
     </div>
 </div>

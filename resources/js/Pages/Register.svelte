@@ -97,10 +97,10 @@
         </form>
 
         <div class="text-grey-dark mt-6">
-            Already have an account? 
-            <a class="no-underline border-b border-blue text-blue" use:inertia href="/login">
-                Log in
-            </a>.
+           
+            <a class="no-underline border-b border-blue text-blue" use:inertia href="/">
+                Kembali ke Dashboard
+            </a>
         </div>
     </div>
 </div>
