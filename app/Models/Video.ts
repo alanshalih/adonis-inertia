@@ -5,6 +5,20 @@ export default class Video extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public title: string
+
+  @column()
+  public video_id: string
+
+  @column()
+  public thumbnail: string
+
+  @column()
+  public event_id: number
+
+
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

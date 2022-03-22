@@ -18,7 +18,7 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
+import Route from '@ioc:Adonis/Core/Route' 
 
  
 Route.get('/register', async ({ inertia,auth,response }) => {
@@ -53,10 +53,14 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 })
 
 Route.group(()=>{
-  Route.get('/', async ({ inertia }) => {
-    return inertia.render('Test')
-  }) 
+  Route.get('/', 'EventsController.index')  
+  Route.resource('/event','EventsController')
+  Route.resource('/event/:event_id/video','VideosController')
+  Route.post('/upload','UploadFilesController.upload')
 }).middleware('auth')
 
 Route.post('register','AuthController.register');
 Route.post('login','AuthController.login');
+Route.get("/:id","ViewersController.optin");
+Route.get("/view/:id","ViewersController.view");
+Route.post("/view/:event_id","ViewersController.registerViewer");

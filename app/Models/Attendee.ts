@@ -2,8 +2,24 @@ import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Attendee extends BaseModel {
-  @column({ isPrimary: true })
-  public id: number
+  @column()
+  public id: string
+
+  @column()
+  public name: string
+  
+  @column()
+  public email: string
+
+  @column()
+  public phone: string
+
+  @column()
+  public gravatar: string
+
+  @column()
+  public event_id: number
+  
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

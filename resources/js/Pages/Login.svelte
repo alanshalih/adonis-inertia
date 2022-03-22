@@ -2,6 +2,7 @@
       import {  inertia, Link } from '@inertiajs/inertia-svelte'
 
       import { Inertia } from '@inertiajs/inertia'
+      
       let values = {
       name: '', 
       email: '',

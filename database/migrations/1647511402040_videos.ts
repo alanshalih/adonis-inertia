@@ -14,6 +14,9 @@ export default class Videos extends BaseSchema {
       table.string("video_id");;
       table.string("title");
       table.string("thumbnail");
+      table.bigInteger("viewer");
+      table.bigInteger("peak_viewer");
+      table.bigInteger("unique_viewer"); 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

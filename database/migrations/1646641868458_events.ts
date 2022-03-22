@@ -7,14 +7,17 @@ export default class Events extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string("title");
-      table.string("slug");
+      table.string("slug").index();
       table.string("logo");
       table.text("description");
       table.string("thumbnail");
       table.string("social_share_title");
       table.string("social_share_subtitle");
-      table.string("video_id");
-      table.text("optin_form_input_list")
+      table.string("video_id"); 
+      table.string("id_identifier"); 
+      table.boolean("show_name"); 
+      table.boolean("show_phone"); 
+      table.boolean("show_email"); 
       table
       .integer('user_id')
       .unsigned()

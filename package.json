@@ -10,6 +10,7 @@
   "devDependencies": {
     "@adonisjs/assembler": "^5.4.2",
     "@symfony/webpack-encore": "^1.8.1",
+    "@tailwindcss/forms": "^0.5.0",
     "adonis-preset-ts": "^2.1.0",
     "autoprefixer": "^10.4.2",
     "pino-pretty": "^7.5.3",
@@ -22,7 +23,7 @@
   "dependencies": {
     "@adonisjs/auth": "^8.0.12",
     "@adonisjs/core": "^5.5.3",
-    "@adonisjs/lucid": "^17.1.0",
+    "@adonisjs/lucid": "^16.3.2",
     "@adonisjs/redis": "^7.1.1",
     "@adonisjs/repl": "^3.1.9",
     "@adonisjs/session": "^6.1.4",
@@ -31,7 +32,8 @@
     "@eidellev/inertia-adonisjs": "^6.0.1",
     "@inertiajs/inertia": "^0.11.0",
     "@inertiajs/inertia-svelte": "^0.8.0",
-    "drip-player": "^0.0.0",
+    "axios": "^0.26.1",
+    "drip-player": "0.0.2",
     "google-auth-library": "^7.14.0",
     "luxon": "^2.3.1",
     "node-mailjet": "^3.3.7",
@@ -41,6 +43,8 @@
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
+    "sqlite3": "^5.0.2",
+    "svelte": "^3.46.4",
     "svelte-loader": "^3.1.2",
     "svelte-preprocess": "^4.10.4",
     "uuid": "^8.3.2"

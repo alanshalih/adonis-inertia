@@ -5,13 +5,16 @@ export default class Attendees extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.string('id').unique()
       table.string("email")
       table.string("phone")
-      table.string("name")
-      table.string("province")
-      table.string("city")
-      table.string("subdistrict")
+      table.string("name") 
+      table.string("gravatar") 
+      table
+      .integer('event_id')
+      .unsigned()
+      .references('events.id')
+      .onDelete('CASCADE')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
