@@ -378,33 +378,7 @@ https://app.dripsender.id/make-password/${code}
 
 
 
-    public async verifyUser ({params, response,session}: HttpContextContract) {
- 
-
-        // Lookup user manually
-        
-
-        // Verify password
-        const user = await User.find(params.id);
-
-        if(user)
-        { 
-            
-            
-                  user.is_verified = true;
-            user.save()
-
-              session.flash('message', 'Verifikasi Berhasil') 
-
-              return  response.redirect('/whatsapp')
-
-        }else{
-                session.flash('errors', 'User tidak ditemukan') 
-              return  response.redirect('/whatsapp')
-        }
-
-       
-    }
+    
 
     
 
@@ -478,68 +452,7 @@ https://app.dripsender.id/make-password/${code}
 
        
     }
-
-    public async googleRedirect ({ally,auth,response}: HttpContextContract)  {
-        const google = ally.use('google')
-      
-        /**
-         * User has explicitly denied the login request
-         */
-        if (google.accessDenied()) {
-          return 'Access was denied'
-        }
-      
-        /**
-         * Unable to verify the CSRF state
-         */
-        if (google.stateMisMatch()) {
-          return 'Request expired. Retry again'
-        }
-      
-        /**
-         * There was an unknown error during the redirect
-         */
-        if (google.hasError()) {
-          return google.getError()
-        }
-      
-        /**
-         * Finally, access the user
-         */
-        const googleuser = await google.user() as any
-  
-        
-        let GetUser = await User.query().where("email",googleuser.email).first()
-  
-        if(GetUser)
-        {
-            
-            await auth.use('web').loginViaId(GetUser.id.toString())
-
-            return response.redirect('/')
-
-        }else{
-             
-            let user = {
-                id : uuidv4(),
-                name : googleuser.name,
-                email : googleuser.email,
-                is_verified : true,
-                password : Math.random().toString(26)
-            }; 
-
-            user.password = await Hash.make(user.password)
-      
-            await User.create(user);
-     
-
-            await auth.use('web').loginViaId(user.id.toString())   
-
-            return response.redirect('/')
-    
-        }
-      
-      }
+ 
  
     
 }
