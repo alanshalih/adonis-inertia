@@ -36,7 +36,7 @@ export default class VideosController {
      if(request.input("main_video"))
      {
        await Event.query().where("id",params.event_id).update({video_id : request.input("video_id")})
-     }
+     } 
      return response.redirect("/event/"+params.event_id+"/edit")
 
   }
