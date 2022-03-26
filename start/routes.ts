@@ -42,6 +42,7 @@ Route.group(()=>{
   Route.get('/', 'EventsController.index')  
   Route.resource('/event','EventsController')
   Route.resource('/event/:event_id/video','VideosController')
+  Route.put("/event/:event_id/edit","EventsController.edit")
   Route.post('/upload','UploadFilesController.upload')
   Route.post('/logout','AuthController.logout')
   Route.get('/register', async ({ inertia }) => {

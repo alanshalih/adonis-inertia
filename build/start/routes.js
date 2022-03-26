@@ -17,6 +17,7 @@ Route_1.default.group(() => {
     Route_1.default.get('/', 'EventsController.index');
     Route_1.default.resource('/event', 'EventsController');
     Route_1.default.resource('/event/:event_id/video', 'VideosController');
+    Route_1.default.put("/event/:event_id/edit", "EventsController.edit");
     Route_1.default.post('/upload', 'UploadFilesController.upload');
     Route_1.default.post('/logout', 'AuthController.logout');
     Route_1.default.get('/register', async ({ inertia }) => {
