@@ -18,7 +18,7 @@ export default class Attendee extends BaseModel {
   public gravatar: string
 
   @column()
-  public event_id: number
+  public event_id: string
   
 
   @column.dateTime({ autoCreate: true })

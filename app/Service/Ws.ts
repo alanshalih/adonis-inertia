@@ -3,7 +3,7 @@ import { WebSocketServer } from 'ws';
 import AdonisServer from '@ioc:Adonis/Core/Server'
 
 class Ws {
-  public io: WebSocketServer
+  public io: WebSocketServer 
   private booted = false
 
   public boot() {
