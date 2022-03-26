@@ -7,7 +7,7 @@ export let event;
 export let videos;
 export let viewer;
 let concurrent_viewer = 0;
-const ws = new WebSocket("ws://127.0.0.1:6543?id="+viewer.id+"&event_id="+viewer.event_id);
+const ws = new WebSocket(location.protocol.replace('http','ws')+"//"+location.host+"?id="+viewer.id+"&event_id="+viewer.event_id);
 ws.addEventListener("message",(event)=>{
     const data = JSON.parse(event.data) 
     console.log(data)
