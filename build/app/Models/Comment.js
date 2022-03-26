@@ -31,7 +31,7 @@ __decorate([
 ], Comment.prototype, "content", void 0);
 __decorate([
     (0, Orm_1.column)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Comment.prototype, "event_id", void 0);
 __decorate([
     (0, Orm_1.column)(),

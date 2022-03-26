@@ -15,7 +15,7 @@ export default class Comment extends BaseModel {
   public content: string
 
   @column()
-  public event_id: number
+  public event_id: string
 
   @column()
   public replies: number

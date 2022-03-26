@@ -15,7 +15,7 @@ export default class Reply extends BaseModel {
   public content: string
 
   @column()
-  public comment_id: number
+  public comment_id: string
  
 
   @column.dateTime({ autoCreate: true })
