@@ -27,13 +27,13 @@ class VideosController {
             }
         return inertia.render("EditVideo", { event_id: params.event_id, form, main_video });
     }
-    async update({ params, request }) {
+    async update({ params, request, response }) {
         let data = request.except(['id', 'main_video']);
         await Video_1.default.query().where('id', params.id).update(data);
         if (request.input("main_video")) {
             await Event_1.default.query().where("id", params.event_id).update({ video_id: request.input("video_id") });
         }
-        return "ok";
+        return response.redirect("/event/" + params.event_id + "/edit");
     }
     async destroy({}) { }
 }

@@ -6,10 +6,10 @@ import axios from "axios"
 export let event;
 export let videos;
 export let viewer;
-const ws = new WebSocket("ws://127.0.0.1:6543?id="+viewer.id+"&event_id="+viewer.event_id);
-ws.addEventListener("message",(data)=>{
-console.log(data)
-})
+// const ws = new WebSocket("ws://127.0.0.1:6543?id="+viewer.id+"&event_id="+viewer.event_id);
+// ws.addEventListener("message",(data)=>{
+// console.log(data)
+// })
 let comments = []
 let sortBy = "popularity"
 let video_id;
