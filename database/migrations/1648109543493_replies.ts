@@ -6,11 +6,10 @@ export default class Replies extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+     
       table
-      .string('comment_id')
-      .unsigned()
-      .references('comments.id')
-      .onDelete('CASCADE')
+      .integer('comment_id')
+      .unsigned().index()
       table.string("name")
       table.string("gravatar")
       table.text("content")

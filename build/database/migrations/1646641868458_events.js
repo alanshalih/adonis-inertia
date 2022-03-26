@@ -24,11 +24,6 @@ class Events extends Schema_1.default {
             table.boolean("show_name");
             table.boolean("show_phone");
             table.boolean("show_email");
-            table
-                .string('user_id')
-                .unsigned()
-                .references('users.id')
-                .onDelete('CASCADE');
             table.timestamp('created_at', { useTz: true });
             table.timestamp('updated_at', { useTz: true });
         });

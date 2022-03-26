@@ -11,10 +11,8 @@ export default class Attendees extends BaseSchema {
       table.string("name") 
       table.string("gravatar") 
       table
-      .string('event_id')
-      .unsigned()
-      .references('events.id')
-      .onDelete('CASCADE')
+      .integer('event_id')
+      .unsigned().index()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

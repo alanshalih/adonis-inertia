@@ -17,10 +17,8 @@ class Attendees extends Schema_1.default {
             table.string("name");
             table.string("gravatar");
             table
-                .string('event_id')
-                .unsigned()
-                .references('events.id')
-                .onDelete('CASCADE');
+                .integer('event_id')
+                .unsigned().index();
             table.timestamp('created_at', { useTz: true });
             table.timestamp('updated_at', { useTz: true });
         });

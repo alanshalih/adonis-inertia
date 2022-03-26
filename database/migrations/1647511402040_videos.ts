@@ -7,10 +7,8 @@ export default class Videos extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-      .string('event_id')
-      .unsigned()
-      .references('events.id')
-      .onDelete('CASCADE')
+      .integer('event_id')
+      .unsigned().index()
       table.string("video_id");;
       table.string("title");
       table.string("thumbnail");

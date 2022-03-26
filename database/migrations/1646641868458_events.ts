@@ -17,12 +17,7 @@ export default class Events extends BaseSchema {
       table.string("id_identifier"); 
       table.boolean("show_name"); 
       table.boolean("show_phone"); 
-      table.boolean("show_email"); 
-      table
-      .string('user_id')
-      .unsigned()
-      .references('users.id')
-      .onDelete('CASCADE')
+      table.boolean("show_email");  
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
