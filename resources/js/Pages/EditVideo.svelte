@@ -13,7 +13,11 @@ import VideoForm from "../Components/VideoForm.svelte";
         {
             form.main_video = main_video;
         }
-            Inertia.put('/event/'+event_id+"/video/"+form.id, form)
+            Inertia.put('/event/'+event_id+"/video/"+form.id, form,{
+                onSuccess : page=>{
+                    Inertia.visit('/event/'+event_id+"/edit")
+                }
+            })
     }
 </script>
 <Layout>

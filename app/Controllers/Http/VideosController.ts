@@ -30,14 +30,15 @@ export default class VideosController {
     return inertia.render("EditVideo",{event_id : params.event_id,form,main_video})
   }
 
-  public async update({params,request,response}: HttpContextContract) {
+  public async update({params,request}: HttpContextContract) {
+
     let data = request.except(['id','main_video']);
      await Video.query().where('id',params.id).update(data)
      if(request.input("main_video"))
      {
        await Event.query().where("id",params.event_id).update({video_id : request.input("video_id")})
      } 
-     return response.redirect("/event/"+params.event_id+"/edit")
+     return "ok";
 
   }
 
