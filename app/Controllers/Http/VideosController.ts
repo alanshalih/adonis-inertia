@@ -11,7 +11,7 @@ export default class VideosController {
 
   public async store({request,params,response}: HttpContextContract) {
     let data = request.all();
-    data.event_id = parseInt(params.event_id);
+    data.event_id = params.event_id;
     await Video.create(data)
     return response.redirect("/event/"+params.event_id+"/edit")
   }
