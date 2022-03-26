@@ -31,7 +31,7 @@ __decorate([
 ], Video.prototype, "thumbnail", void 0);
 __decorate([
     (0, Orm_1.column)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Video.prototype, "event_id", void 0);
 __decorate([
     Orm_1.column.dateTime({ autoCreate: true }),

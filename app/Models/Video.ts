@@ -15,7 +15,7 @@ export default class Video extends BaseModel {
   public thumbnail: string
 
   @column()
-  public event_id: number
+  public event_id: string
 
 
 
