@@ -11,7 +11,7 @@ export default class Attendees extends BaseSchema {
       table.string("name") 
       table.string("gravatar") 
       table
-      .integer('event_id')
+      .string('event_id')
       .unsigned()
       .references('events.id')
       .onDelete('CASCADE')

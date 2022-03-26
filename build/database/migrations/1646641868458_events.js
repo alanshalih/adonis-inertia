@@ -25,7 +25,7 @@ class Events extends Schema_1.default {
             table.boolean("show_phone");
             table.boolean("show_email");
             table
-                .integer('user_id')
+                .string('user_id')
                 .unsigned()
                 .references('users.id')
                 .onDelete('CASCADE');

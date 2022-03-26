@@ -17,7 +17,7 @@ class Attendees extends Schema_1.default {
             table.string("name");
             table.string("gravatar");
             table
-                .integer('event_id')
+                .string('event_id')
                 .unsigned()
                 .references('events.id')
                 .onDelete('CASCADE');

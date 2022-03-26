@@ -13,7 +13,7 @@ class Videos extends Schema_1.default {
         this.schema.createTable(this.tableName, (table) => {
             table.increments('id');
             table
-                .integer('event_id')
+                .string('event_id')
                 .unsigned()
                 .references('events.id')
                 .onDelete('CASCADE');

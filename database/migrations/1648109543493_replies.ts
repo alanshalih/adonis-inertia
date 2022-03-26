@@ -7,7 +7,7 @@ export default class Replies extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-      .integer('comment_id')
+      .string('comment_id')
       .unsigned()
       .references('comments.id')
       .onDelete('CASCADE')
