@@ -6,10 +6,16 @@ import axios from "axios"
 export let event;
 export let videos;
 export let viewer;
-// const ws = new WebSocket("ws://127.0.0.1:6543?id="+viewer.id+"&event_id="+viewer.event_id);
-// ws.addEventListener("message",(data)=>{
-// console.log(data)
-// })
+let concurrent_viewer = 0;
+const ws = new WebSocket("ws://127.0.0.1:6543?id="+viewer.id+"&event_id="+viewer.event_id);
+ws.addEventListener("message",(event)=>{
+    const data = JSON.parse(event.data) 
+    console.log(data)
+    if(data.concurrent)
+    {
+      concurrent_viewer = data.concurrent;
+    }
+})
 let comments = []
 let sortBy = "popularity"
 let video_id;
@@ -64,6 +70,9 @@ function SelectVideo(id){
     </div>
     <div class="bg-black">
         <VideoPlayer {event} {video_id}></VideoPlayer>
+        <div class="px-4  sm:px-6 ">
+          <p class="text-white">{concurrent_viewer} pemirsa</p>
+        </div>
     </div>
     <div class="container mx-auto py-5">
        <section id="other-video" >

@@ -7,58 +7,69 @@
 | boot.
 |
 */
+import Redis from '@ioc:Adonis/Addons/Redis';
 import Ws from 'App/Service/Ws'
 Ws.boot()
+
+const url = require('url')
+
+/**
+ * Listen for incoming socket connections
+ */
+
  
+Ws.io.on('connection',async (socket : any,request) => {  
+    // console.log(client)
+    // console.log(request.url)
+    // socket.on('message', function message(data) {
+    //     console.log(`Received message ${data} from user ${client}`);
+    //   });
+    const queryObject = url.parse(request.url, true).query;
+    console.log(queryObject);
 
-// const url = require('url')
+    // await Redis.sadd("room-"+queryObject.event_id,queryObject.id)
+    socket.id = queryObject.id;
+    socket.room = queryObject.event_id;
 
-// /**
-//  * Listen for incoming socket connections
-//  */
+    const concurrent = await Redis.incr("concurrent-viewer:"+socket.room)
+    await Redis.sadd("viewer_id:"+socket.room,socket.id)
 
-// Ws.io.on('connection', (ws) => {
+    socket.send(JSON.stringify({
+      room : socket.room,
+      concurrent : concurrent 
+    }))
+    
+    socket.on('close', async ()=> { 
+        await Redis.decr("concurrent-viewer:"+socket.room)
+        await Redis.srem("viewer_id:"+socket.room,socket.id)
+    });
+
+    
+
+    socket.on('message', function (msg) {
+      // broadcast message to all connected clients in the room 
+      Redis.publish("jam-communication:"+process.env.PORT,msg) 
+    })
+
+   
+  
+  
+  
+      
+})  
+
+Redis.subscribe("jam-communication:"+process.env.PORT,(msg)=>{
+  const message = JSON.parse(msg)
+  Ws.io.clients.forEach(function (client : any) {
+        if ( client.id !== message.sender_id && client.room == message.room) { 
+          client.send(msg); 
+        };
+    });
+})
 
 
-//   ws.room = [];
-
-//   ws.send(JSON.stringify({
-//     msg: "user joined"
-//   }));
-
-//   console.log('connected');
-
-//   ws.on('message', message => {
-//     console.log('message: ', message);
-//     //try{
-//     var messag = JSON.parse(message);
-//     //}catch(e){console.log(e)}
-//     if (messag.join) {
-//       ws.room.push(messag.join)
-//     }
-
-//     if (messag.room) {
-//       broadcast(message);
-//     }
-//     if (messag.msg) {
-//       console.log('message: ', messag.msg)
-//     }
-//   })
-
-//   ws.on('error', e => console.log(e))
-//   ws.on('close', (e) => console.log('websocket closed' + e))
-
-// })
-
-// function broadcast(message) {
-//   Ws.io.clients.forEach(client => {
-//     if (client.room.indexOf(JSON.parse(message).room) > -1) {
-//       client.send(message)
-//     }
-//   })
+// if(process.env.NODE_APP_INSTANCE === "0") {
+//     // the code in here will only be executed on the first instance in the cluster
+//     console.log("master");
 // }
-
-// // if(process.env.NODE_APP_INSTANCE === "0") {
-// //     // the code in here will only be executed on the first instance in the cluster
-// //     console.log("master");
-// // }
+  

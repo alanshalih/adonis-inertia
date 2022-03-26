@@ -1,3 +1,4 @@
+import Redis from '@ioc:Adonis/Addons/Redis';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Attendee from 'App/Models/Attendee';
 import Event from 'App/Models/Event'
@@ -67,7 +68,7 @@ export default class ViewersController {
     // const identifier = request.input(request.input("identifier"));
     let identifier;
 
-    const phone = request.input("phone") ? this.validatePhone(request.input("phone")) : ''
+    const phone = request.input("phone") ? await this.validatePhone(request.input("phone")) : ''
 
     if(request.input("identifier"))
     {
@@ -122,10 +123,14 @@ export default class ViewersController {
     
     const viewer = await Attendee.query().where("id",params.id).first();
 
+  
    
 
     if(viewer){ 
       const event = await Event.find(viewer.event_id);
+
+      await Redis.incr("total-viewer:"+viewer.event_id)
+
       let videos;
       
       if(event)
