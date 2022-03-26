@@ -62,3 +62,6 @@ Route.get("/:id","ViewersController.optin");
 Route.get("/view/:id","ViewersController.view");
 Route.post("/view/:event_id","ViewersController.registerViewer");
 Route.get("/api/register/:event_id","ViewersController.registerViewer");
+Route.get("/comment/:event_id","CommentsController.index");
+Route.post("/comment","CommentsController.store");
+Route.post("/like/:id","CommentsController.like");

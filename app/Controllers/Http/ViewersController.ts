@@ -29,7 +29,7 @@ export default class ViewersController {
     }
   } 
 
-  public async validatePhone(phone) {
+  public async validatePhone(phone ) {
 
     if(!phone)
     {
@@ -37,9 +37,10 @@ export default class ViewersController {
     }
 
     let selected_dial_code = '+62';
+     
 
+    var number = phone.toString().split('-').join(' ').split(' ').join('');
 
-    var number = phone.split('-').join(' ').split(' ').join('');
     if (number[0] == '0') {
       number = number.replace('0', '')
     }

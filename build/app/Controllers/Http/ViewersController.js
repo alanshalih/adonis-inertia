@@ -28,7 +28,7 @@ class ViewersController {
             return phone;
         }
         let selected_dial_code = '+62';
-        var number = phone.split('-').join(' ').split(' ').join('');
+        var number = phone.toString().split('-').join(' ').split(' ').join('');
         if (number[0] == '0') {
             number = number.replace('0', '');
         }

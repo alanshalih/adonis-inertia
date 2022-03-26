@@ -29,4 +29,7 @@ Route_1.default.get("/:id", "ViewersController.optin");
 Route_1.default.get("/view/:id", "ViewersController.view");
 Route_1.default.post("/view/:event_id", "ViewersController.registerViewer");
 Route_1.default.get("/api/register/:event_id", "ViewersController.registerViewer");
+Route_1.default.get("/comment/:event_id", "CommentsController.index");
+Route_1.default.post("/comment", "CommentsController.store");
+Route_1.default.post("/like/:id", "CommentsController.like");
 //# sourceMappingURL=routes.js.map
