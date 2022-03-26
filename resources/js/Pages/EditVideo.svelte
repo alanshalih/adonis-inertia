@@ -14,7 +14,7 @@ import VideoForm from "../Components/VideoForm.svelte";
             form.main_video = main_video;
         }
         console.log(event_id)
-            Inertia.put('/event/'+event_id+"/video/"+form.id, form)
+            Inertia.post('/event/'+event_id+"/video/"+form.id, form)
     }
 </script>
 <Layout>
