@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/favicon.ico">
+  @entryPointStyles('viewer')
+  @entryPointScripts('viewer')
+  <title>{{event.title}}</title>
+  <meta property="og:url" content="//form.drip.id/{{event.slug}}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{event.social_share_title}}">
+    <meta property="og:description" content="{{event.social_share_subtitle}}">
+    <meta property="og:image" content="{{event.thumbnail}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="628">
+    <meta name="twitter:title" content="{{event.social_share_title}}">
+    <meta name="twitter:description" content="{{event.social_share_subtitle}}">
+    <meta name="twitter:image" content="{{event.thumbnail}}">
+    <meta name="twitter:card" content="summary_large_image">
+    {{{head_script}}}
+</head>
+<body> 
+    <div id="app"></div>
+    @if(event)
+    <script>
+      window.event = {{{JSON.stringify(event)}}}
+    </script>
+    @endif
+    @if(videos)
+    <script>
+      window.videos = {{{JSON.stringify(videos)}}}
+    </script>
+    @endif
+    @if(viewer)
+    <script>
+      window.viewer = {{{JSON.stringify(viewer)}}}
+    </script>
+    @endif
+    {{{body_script}}}
+</body>
+</html>

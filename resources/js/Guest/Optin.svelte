@@ -1,17 +1,12 @@
 <script>
 
-import { Inertia } from '@inertiajs/inertia'
-    export let event;
+    export let event; 
     let viewer = {
       name : '',
       email : '',
       phone : ''
     }
-
-    function handleSubmit() {
-        viewer.identifier = event.id_identifier;
-        Inertia.post('/view/'+event.id, viewer) 
-    }
+ 
 
 </script>
 <div class="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
@@ -37,7 +32,8 @@ import { Inertia } from '@inertiajs/inertia'
         <p class="mt-4 text-lg leading-6 text-gray-500">{event.description}.</p>
       </div>
       <div class="mt-12">
-        <form on:submit|preventDefault={handleSubmit}  class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+        <form action="/view/{event.id}" method="POST"  class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+          <input type="hidden" name="identifier" value="{event.identifier}">
           {#if event.show_name} 
           <div class="sm:col-span-2">
             <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>

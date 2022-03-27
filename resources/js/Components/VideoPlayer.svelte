@@ -1,5 +1,4 @@
-<script>
-	import Homelayout from './../Layout/homelayout.svelte';
+<script> 
     import { onMount } from "svelte";
     
      
@@ -33,7 +32,7 @@
         let toolbar = false;
         let PlayerWidth  = config.width;
         let PlayerHeight = config.height;
-        let isFullscreen = false;
+       export let isFullscreen = false;
         let rotate = false;
     
     

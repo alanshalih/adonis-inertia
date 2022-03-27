@@ -55,6 +55,14 @@ __decorate([
 ], Event.prototype, "id_identifier", void 0);
 __decorate([
     (0, Orm_1.column)(),
+    __metadata("design:type", String)
+], Event.prototype, "head_script", void 0);
+__decorate([
+    (0, Orm_1.column)(),
+    __metadata("design:type", String)
+], Event.prototype, "body_script", void 0);
+__decorate([
+    (0, Orm_1.column)(),
     __metadata("design:type", Boolean)
 ], Event.prototype, "show_name", void 0);
 __decorate([

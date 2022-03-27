@@ -7,7 +7,7 @@ import Video from 'App/Models/Video';
 const crypto = require('crypto')
 
 export default class ViewersController {
-  public async optin({inertia,params,request,response}: HttpContextContract) {
+  public async optin({view,params,request,response}: HttpContextContract) {
     
     
     const event = await Event.query().where("slug",params.id).first();
@@ -21,7 +21,17 @@ export default class ViewersController {
       {
         return response.redirect("/view/"+viewer_id)
       }else{
-        return inertia.render("Optin",{event})
+
+        const body_script = event.body_script;
+
+        event.body_script = '';
+
+        const head_script = event.head_script;
+
+        event.head_script = '';
+
+
+        return view.render("optin",{event,body_script,head_script})
       }
       
     }
@@ -119,7 +129,7 @@ export default class ViewersController {
 
     
   } 
-  public async view({inertia,params}: HttpContextContract) {
+  public async view({view,params}: HttpContextContract) {
     
     const viewer = await Attendee.query().where("id",params.id).first();
 
@@ -134,7 +144,9 @@ export default class ViewersController {
       let videos;
       
       if(event)
-      videos = await Video.query().where("event_id",event.id);
+      {
+
+        videos = await Video.query().where("event_id",event.id);
 
       if(!videos)
       {
@@ -146,7 +158,18 @@ export default class ViewersController {
         videos = [];
       }
 
-      return inertia.render("Viewer",{viewer,event,videos})
+      const body_script = event.body_script;
+
+      event.body_script = '';
+
+      const head_script = event.head_script;
+
+      event.head_script = '';
+      
+      return view.render("optin",{viewer,event,body_script,head_script,videos})
+        
+      }
+      
     } 
     else {
       return "Page Not Found";

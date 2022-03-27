@@ -32,6 +32,14 @@ export default class Event extends BaseModel {
   @column()
   public id_identifier: string
 
+
+  @column()
+  public head_script: string
+
+
+  @column()
+  public body_script: string
+
   @column()
   public show_name: boolean
 

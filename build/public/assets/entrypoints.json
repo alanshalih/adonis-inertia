@@ -2,10 +2,18 @@
   "entrypoints": {
     "app": {
       "css": [
-        "/assets/app.aad5ae8f.css"
+        "/assets/app.1692ceea.css"
       ],
       "js": [
-        "/assets/app.58a74671.js"
+        "/assets/app.04aec114.js"
+      ]
+    },
+    "viewer": {
+      "css": [
+        "/assets/viewer.1692ceea.css"
+      ],
+      "js": [
+        "/assets/viewer.459fe790.js"
       ]
     }
   }

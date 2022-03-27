@@ -9,7 +9,7 @@ const Event_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Models/Event"
 const Video_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Models/Video"));
 const crypto = require('crypto');
 class ViewersController {
-    async optin({ inertia, params, request, response }) {
+    async optin({ view, params, request, response }) {
         const event = await Event_1.default.query().where("slug", params.id).first();
         if (event) {
             const viewer_id = request.cookie('viewer-' + event.id);
@@ -17,7 +17,11 @@ class ViewersController {
                 return response.redirect("/view/" + viewer_id);
             }
             else {
-                return inertia.render("Optin", { event });
+                const body_script = event.body_script;
+                event.body_script = '';
+                const head_script = event.head_script;
+                event.head_script = '';
+                return view.render("optin", { event, body_script, head_script });
             }
         }
         else {
@@ -83,21 +87,26 @@ class ViewersController {
         }
         return response.cookie('viewer-' + params.event_id, id).redirect("/view/" + id);
     }
-    async view({ inertia, params }) {
+    async view({ view, params }) {
         const viewer = await Attendee_1.default.query().where("id", params.id).first();
         if (viewer) {
             const event = await Event_1.default.find(viewer.event_id);
             await Redis_1.default.incr("total-viewer:" + viewer.event_id);
             let videos;
-            if (event)
+            if (event) {
                 videos = await Video_1.default.query().where("event_id", event.id);
-            if (!videos) {
-                videos = [];
+                if (!videos) {
+                    videos = [];
+                }
+                if (videos.length === 1) {
+                    videos = [];
+                }
+                const body_script = event.body_script;
+                event.body_script = '';
+                const head_script = event.head_script;
+                event.head_script = '';
+                return view.render("optin", { viewer, event, body_script, head_script, videos });
             }
-            if (videos.length === 1) {
-                videos = [];
-            }
-            return inertia.render("Viewer", { viewer, event, videos });
         }
         else {
             return "Page Not Found";

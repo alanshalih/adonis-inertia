@@ -34,6 +34,7 @@ let sortBy = "popularity"
 let video_id;
 let comment_content = ""
 let comment_meta = {}
+let isFullscreen = false;
   
 function SelectVideo(id){
     video_id = id;
@@ -78,16 +79,19 @@ function SelectVideo(id){
     
 </script>
 <div class="bg-black">
-    <div class="hidden lg:block">
-        <div class="bg-black w-full z-10 flex justify-center"><img class="h-12 py-2 lg:h-20 " src="{event.logo}" alt=""></div>
-    </div>
+  {#if !isFullscreen}<div class="hidden lg:block">
+    <div class="bg-black w-full z-10 flex justify-center"><img class="h-12 py-2 lg:h-20 " src="{event.logo}" alt=""></div>
+</div>
+  {/if}
+    
     <div class="bg-black">
-        <VideoPlayer {event} {video_id}></VideoPlayer>
-        <div class="px-4  sm:px-6 ">
-          <p class="text-white">{concurrent_viewer} pemirsa</p>
-        </div>
+        <VideoPlayer bind:isFullscreen="{isFullscreen}" {event} {video_id}></VideoPlayer>
+       
     </div>
-    <div class="container mx-auto py-5">
+    <div class="container mx-auto ">
+      <div class="px-4 py-5 sm:px-6 ">
+        <p class="text-gray-300 text-lg">{concurrent_viewer} orang sedang menonton</p>
+      </div>
        <section id="other-video" >
         <ul   class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
           {#each videos as item}
