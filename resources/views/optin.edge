@@ -18,7 +18,10 @@
     <meta name="twitter:description" content="{{event.social_share_subtitle}}">
     <meta name="twitter:image" content="{{event.thumbnail}}">
     <meta name="twitter:card" content="summary_large_image">
+    @if(head_script)
     {{{head_script}}}
+    @endif
+    
 </head>
 <body> 
     <div id="app"></div>
@@ -36,7 +39,9 @@
     <script>
       window.viewer = {{{JSON.stringify(viewer)}}}
     </script>
-    @endif
+    @endif 
+    @if(body_script)
     {{{body_script}}}
+    @endif
 </body>
 </html>
