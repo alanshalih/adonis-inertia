@@ -7,15 +7,28 @@ export let event;
 export let videos;
 export let viewer;
 let concurrent_viewer = 0;
-const ws = new WebSocket(location.protocol.replace('http','ws')+"//"+location.host+"?id="+viewer.id+"&event_id="+viewer.event_id);
-ws.addEventListener("message",(event)=>{
-    const data = JSON.parse(event.data) 
-    console.log(data)
-    if(data.concurrent)
-    {
-      concurrent_viewer = data.concurrent;
-    }
-})
+
+function connect() {
+
+    const ws = new WebSocket(location.protocol.replace('http','ws')+"//"+location.host+"?id="+viewer.id+"&event_id="+viewer.event_id);
+    
+    ws.addEventListener("message",(event)=>{
+        const data = JSON.parse(event.data)  
+        if(data.concurrent)
+        {
+          concurrent_viewer = data.concurrent;
+        }
+    })
+
+    ws.addEventListener('close', (event) => {
+      setTimeout(() => {
+        connect();
+      }, 60000)
+    });
+  }
+  connect()
+
+
 let comments = []
 let sortBy = "popularity"
 let video_id;

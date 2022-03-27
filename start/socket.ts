@@ -17,6 +17,11 @@ const url = require('url')
  * Listen for incoming socket connections
  */
 
+let bcViewer = {}
+let peakView = {}
+setInterval(()=>{
+  bcViewer = {}
+},5*60000)
  
 Ws.io.on('connection',async (socket : any,request) => {  
     // console.log(client)
@@ -31,8 +36,43 @@ Ws.io.on('connection',async (socket : any,request) => {
     socket.id = queryObject.id;
     socket.room = queryObject.event_id;
 
+   
+
     const concurrent = await Redis.incr("concurrent-viewer:"+socket.room)
     await Redis.sadd("viewer_id:"+socket.room,socket.id)
+    
+    if(peakView[socket.room])
+    {
+      if(concurrent > peakView[socket.room])
+      {
+        peakView[socket.room] = concurrent;
+        
+        const peak = await Redis.get("peak-viewer:"+socket.room);;
+
+        if(peak)
+        {
+          if(concurrent > parseInt(peak))
+          await Redis.set("peak-viewer:"+socket.room,concurrent);
+        }else{
+          await Redis.set("peak-viewer:"+socket.room,concurrent);
+        }
+        
+
+      }
+    }else{
+      peakView[socket.room] = concurrent;
+    }
+
+    if(!bcViewer[socket.room])
+    {
+      bcViewer[socket.room] = true;
+
+      Redis.publish("jam-communication:"+process.env.PORT,JSON.stringify({
+        room : socket.room,
+        sender_id : socket.id,
+        concurrent : concurrent 
+      })) 
+    }
 
     socket.send(JSON.stringify({
       room : socket.room,
