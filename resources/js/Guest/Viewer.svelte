@@ -243,7 +243,7 @@ function SelectVideo(id){
       </div>
     {:else}
     <div class="container p-2 mx-auto">
-      <section class="mb-6  md:-mt-10 ">
+      <section class="mb-6    ">
         <div class="text-gray-200 md:text-xl">
          {event.title}
         </div>
