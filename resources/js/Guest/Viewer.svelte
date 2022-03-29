@@ -8,15 +8,32 @@ export let videos;
 export let viewer;
 let concurrent_viewer = 0;
 
+let ws;
+
+
+let comments = []
+let chats = []
+let sortBy = "popularity"
+let PlayerHeight = 400
+let video_id;
+let comment_content = ""
+let comment_meta = {}
+let isFullscreen = false;
+
+
 function connect() {
 
-    const ws = new WebSocket(location.protocol.replace('http','ws')+"//"+location.host+"?id="+viewer.id+"&event_id="+viewer.event_id);
+    ws = new WebSocket(location.protocol.replace('http','ws')+"//"+location.host+"?id="+viewer.id+"&event_id="+viewer.event_id);
     
     ws.addEventListener("message",(event)=>{
         const data = JSON.parse(event.data)  
         if(data.concurrent)
         {
           concurrent_viewer = data.concurrent;
+        }
+        if(data.text )
+        {
+          chats = [...chats,data]
         }
     })
 
@@ -25,16 +42,11 @@ function connect() {
         connect();
       }, 60000)
     });
+
   }
   connect()
 
 
-let comments = []
-let sortBy = "popularity"
-let video_id;
-let comment_content = ""
-let comment_meta = {}
-let isFullscreen = false;
   
 function SelectVideo(id){
     video_id = id;
@@ -76,7 +88,25 @@ function SelectVideo(id){
       comments = comments; 
     })
   }
+
+  let chat_text = ""
+  function SendChat()
+  {
+    const data = {
+      name : viewer.name,
+      sender_id : viewer.id,
+      text : chat_text,
+      room : event.id,
+      gravatar : viewer.gravatar
+    }
+    ws.send(JSON.stringify(data))
+    // chats = [...chats,data]
+    chat_text = ""
+  }
+
+  const ScreenHeight = window.screen.height;;
     
+  let show_comment = false;
 </script>
 <div class="bg-black">
   {#if !isFullscreen}<div class="hidden lg:block">
@@ -84,15 +114,151 @@ function SelectVideo(id){
 </div>
   {/if}
     
-    <div class="bg-black">
-        <VideoPlayer bind:isFullscreen="{isFullscreen}" {event} {video_id}></VideoPlayer>
+    <div class="bg-black flex   {isFullscreen ? '' : ' container mx-auto'}  ">
+       <div class="grow ">
+        <VideoPlayer bind:PlayerHeight="{PlayerHeight}" bind:isFullscreen="{isFullscreen}" {event} {video_id}></VideoPlayer>
+       </div>
+       {#if !isFullscreen}
+          <!-- content here -->
+          <div class="flex-none hidden md:block w-80 relative  bg-gray-900  text-white">
+            <div class="w-full  " style="height: {PlayerHeight+32}px;">
+              <div class="relative flex items-center p-3 border-b border-gray-700">
+                <img class="object-cover w-10 h-10 rounded-full"
+                  src="{viewer.gravatar}" alt="username" />
+                <span class="block ml-2 font-bold text-gray-600">Chat</span>
+                <span class="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3">
+                </span>
+              </div>
+              <div class="relative w-full text-sm p-3 overflow-y-auto " style="height: {PlayerHeight-100}px;">
+                {#each chats as chat}
+                   <!-- content here -->
+                   <div class=" ">
+                    <img src="{chat.gravatar}" class="w-6 h-6 rounded-full inline mr-1" alt="">
+                    <span class="text-gray-200 mr-2">{chat.name}</span> <span class="text-gray-400">
+                      {chat.text}
+                    </span>
+                  </div>
+                {/each}
+               
+                 
+  
+                 
+  
+              </div>
+  
+              <div class="absolute bottom-0 flex gap-2 p-2 items-center justify-between w-full  border-t border-gray-700">
+  
+                <button>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button> 
+  
+                <form on:submit|preventDefault="{SendChat}" class="flex gap-2   w-full">
+                  <input type="text" placeholder="Message"
+                  class="w-full bg-gray-700" bind:value="{chat_text}"
+                  name="message" required />
+                 
+                <button  type="submit">
+                  <svg class="w-5 h-5 text-gray-500 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                  </svg>
+                </button>
+                </form>
+              </div>
+            </div>
+          </div>
+       {/if}
+        
        
     </div>
-    <div class="container mx-auto ">
-      <div class="px-4 py-5 sm:px-6 ">
-        <p class="text-gray-300 text-lg">{concurrent_viewer} orang sedang menonton</p>
+    
+    {#if !isFullscreen}
+       <!-- content here -->
+ 
+    {#if show_comment }
+       <!-- content here -->
+       <div>
+        <div class="w-full  " style="height: {PlayerHeight+32}px;">
+          <div class="flex justify-between border-b border-gray-700">
+            <div class="relative flex items-center  p-3 ">
+              <img class="object-cover w-10 h-10 rounded-full"
+                src="{viewer.gravatar}" alt="username" />
+              <span class="block ml-2 font-bold text-gray-600">Chat</span>
+              <span class="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3">
+              </span>
+            </div>
+            <div class="p-3 mt-2">
+             <button class="text-gray-300"   on:click="{()=>{show_comment = false;}}"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg></button>
+            </div>
+          </div>
+          <div class="relative w-full text-sm p-3 overflow-y-auto " style="height: {ScreenHeight-PlayerHeight-126}px;">
+            {#each chats as chat}
+               <!-- content here -->
+               <div class=" ">
+                <img src="{chat.gravatar}" class="w-6 h-6 rounded-full inline mr-1" alt="">
+                <span class="text-gray-200 mr-2">{chat.name}</span> <span class="text-gray-400">
+                  {chat.text}
+                </span>
+              </div>
+            {/each}
+           
+             
+  
+             
+  
+          </div>
+  
+          <div class="absolute bottom-0 flex gap-2 p-2 items-center justify-between w-full  border-t border-gray-700">
+  
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button> 
+  
+            <form on:submit|preventDefault="{SendChat}" class="flex gap-2   w-full">
+              <input  type="text" placeholder="Message"
+              class="w-full bg-gray-700 text-gray-300" bind:value="{chat_text}"
+              name="message" required />
+             
+            <button  type="submit">
+              <svg class="w-5 h-5 text-gray-500 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+              </svg>
+            </button>
+            </form>
+          </div>
+        </div>
       </div>
-       <section id="other-video" >
+    {:else}
+    <div class="container p-2 mx-auto">
+      <section class="mb-6  md:-mt-10 ">
+        <div class="text-gray-200 md:text-xl">
+         {event.title}
+        </div>
+        <div>
+          <p class="text-gray-400 text-sm md:text-lg">{concurrent_viewer} orang sedang menonton</p>
+        </div>
+       </section>
+      <section class="mb-7 md:hidden" id="switch-to-comment">
+        <div class="">
+          <input type="text" on:click="{()=>{show_comment = true;}}" readonly   placeholder="Send Message"
+          class="w-full bg-gray-900"  
+          name="message"   /> 
+        </div>
+      </section>
+      <section id="other-video" >
         <ul   class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
           {#each videos as item}
              <!-- content here -->
@@ -105,81 +271,17 @@ function SelectVideo(id){
                 <span class="sr-only">View details for Hari 1 - UxqzqcxrzK0</span>
               </button>
             </div>
-            <p class="mt-2 block text-sm font-medium text-white truncate pointer-events-none">{item.title}</p> 
+            <p class="mt-2 block text-sm font-medium text-gray-200 truncate pointer-events-none">{item.title}</p> 
           </li>
           {/each}
         
           <!-- More files... -->
         </ul>
        </section>
-        <section aria-labelledby="notes-title">
-            <div class="bg-black shadow sm:rounded-lg sm:overflow-hidden">
-              <div class="px-4  sm:px-6">
-                <h2 id="notes-title" class="text-lg font-medium text-gray-300">Komentar</h2>
-              </div>
-             
-              <div class="bg-black px-4 pt-6 pb-2">
-                <div class="flex space-x-3">
-                  <div class="flex-shrink-0">
-                    <img class="h-10 w-10 rounded-full" src="{viewer.gravatar}" alt="">
-                  </div>
-                  <div class="min-w-0 flex-1">
-                    <form  on:submit|preventDefault={submitComment}>
-                      <div>
-                        <label for="comment" class="sr-only">About</label>
-                        <textarea bind:value="{comment_content}" id="comment" name="comment" rows="3" class="shadow-sm bg-black placeholder:text-white text-white block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border border-gray-300 rounded-md" placeholder="Tambahkan Komentar"></textarea>
-                      </div>
-                      <div class="mt-3 flex items-center justify-between">
-                      <div></div>
-                        <button  type="submit" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Comment</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="bg-black px-4 pt-6 pb-2">
-                <label for="sortby" class="block text-sm font-medium text-gray-200">Sort By</label>
-                <select on:change="{loadComment}" bind:value="{sortBy}" id="sortby" name="sortby" class="mt-1 block pl-3 pr-10 py-2 bg-black text-white border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                  <option value="popularity">Populer</option>
-                  <option value="recently">Terkini</option> 
-                </select>
-              </div>
-              <div class="divide-y divide-gray-200">
-                
-                <div class="px-4 py-6 sm:px-6">
-                  <ul   class="space-y-8">
-                    {#each comments as item,index}
-                       <!-- content here -->
-                       <li>
-                        <div class="flex space-x-3">
-                          <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full" src="{item.gravatar}" alt="">
-                          </div>
-                          <div>
-                            <div class="text-sm">
-                              <p class="font-medium text-gray-300">{item.name}</p>
-                            </div>
-                            <div class="mt-1 text-sm text-gray-400">
-                              <p>{item.content}</p>
-                            </div>
-                            <div class="mt-2 text-sm space-x-2">
-                              <span class="text-gray-500 font-medium">{item.created_at}</span>
-                              <span class="text-gray-500 font-medium">&middot;</span>
-                              <button on:click="{()=>{LikeComment(item,index)}}" type="button" class="text-gray-500 font-medium">{item.like} Like</button>
-                              <button type="button" class="text-gray-500 font-medium">Reply</button>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    {/each}
-                   
-   
-                  </ul>
-                </div>
-              </div>
-              
-            </div>
-          </section> 
-   
     </div>
+    {/if}
+    {/if}
+    
+    
+     
 </div>

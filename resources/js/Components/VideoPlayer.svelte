@@ -31,7 +31,7 @@
         let ready = false;
         let toolbar = false;
         let PlayerWidth  = config.width;
-        let PlayerHeight = config.height;
+        export let PlayerHeight = config.height;
        export let isFullscreen = false;
         let rotate = false;
     
@@ -203,7 +203,7 @@
     </script>
     
    <div class="bg-black"> 
-    <div id="check-width"  class="relative bg-black    {isFullscreen ? '' : 'xl:container mx-auto'}      {rotate ? '  ' : ''}" style=" height : {PlayerHeight}px" >
+    <div id="check-width"  class="relative bg-black       {rotate ? '  ' : ''}" style=" height : {PlayerHeight}px" >
         <div class=" absolute " id="{randomId}"></div>
         <div class="absolute z-10 "  on:mousemove="{()=>{toolbar = true;triggerTime = 3000}}"  on:mouseleave="{()=>{toolbar = false;}}" style="width : {PlayerWidth}px; height : {PlayerHeight}px">
              
